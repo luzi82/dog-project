@@ -1,7 +1,8 @@
 .DS_Store
+.ipynb_checkpoints/
+/.project
+bottleneck_features/DogVGG16Data.npz
 dogImages/
 lfw/
 saved_models/weights.best.from_scratch.hdf5
 saved_models/weights.best.vgg16.hdf5
-.ipynb_checkpoints/
-bottleneck_features/DogVGG16Data.npz
