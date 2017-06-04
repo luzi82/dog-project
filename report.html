@@ -13562,6 +13562,7 @@ bY0TY3EyTsbJuK3x/wPZN13yOGr9agAAAABJRU5ErkJggg==
 <span class="n">dog_files_short</span> <span class="o">=</span> <span class="n">train_files</span><span class="p">[:</span><span class="mi">100</span><span class="p">]</span>
 <span class="c1"># Do NOT modify the code above this line.</span>
 
+<span class="c1"># output number of img_path pass the face_detector func</span>
 <span class="k">def</span> <span class="nf">face_detect_count</span><span class="p">(</span><span class="n">img_path_list</span><span class="p">):</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">img_path</span> <span class="ow">in</span> <span class="n">img_path_list</span><span class="p">:</span>
@@ -13574,6 +13575,7 @@ bY0TY3EyTsbJuK3x/wPZN13yOGr9agAAAABJRU5ErkJggg==
 <span class="n">human_detect_count</span> <span class="o">=</span> <span class="n">face_detect_count</span><span class="p">(</span><span class="n">human_files_short</span><span class="p">)</span>
 <span class="n">dog_detect_count</span> <span class="o">=</span> <span class="n">face_detect_count</span><span class="p">(</span><span class="n">dog_files_short</span><span class="p">)</span>
 
+<span class="c1"># print the result</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Faces detect percentage in human images:&#39;</span><span class="p">,</span><span class="n">human_detect_count</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Faces detect percentage in dog images:&#39;</span><span class="p">,</span><span class="n">dog_detect_count</span><span class="p">)</span>
 </pre></div>
@@ -13621,12 +13623,14 @@ Faces detect percentage in dog images: 11
 <span class="c1">## face detection algorithm on the LFW dataset</span>
 <span class="c1">### Feel free to use as many code cells as needed.</span>
 
+<span class="c1"># work like face_detector, img is output of cv2.imread so we can reuse among difference face_cascadee without reload image</span>
 <span class="k">def</span> <span class="nf">face_detector2</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="n">face_cascadee</span><span class="p">):</span>
     <span class="c1">#img = cv2.imread(img_path)</span>
     <span class="c1">#gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)</span>
     <span class="n">faces</span> <span class="o">=</span> <span class="n">face_cascadee</span><span class="o">.</span><span class="n">detectMultiScale</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">faces</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
+<span class="c1"># work like face_detect_count, img_list is list of output of cv2.imread</span>
 <span class="k">def</span> <span class="nf">face_detect_count2</span><span class="p">(</span><span class="n">img_list</span><span class="p">,</span><span class="n">face_cascadee</span><span class="p">):</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">img_list</span><span class="p">:</span>
@@ -13634,6 +13638,7 @@ Faces detect percentage in dog images: 11
             <span class="n">ret</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">ret</span>
 
+<span class="c1"># image loader</span>
 <span class="k">def</span> <span class="nf">load_img_list</span><span class="p">(</span><span class="n">img_path_list</span><span class="p">):</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="p">[</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">img_path</span> <span class="ow">in</span> <span class="n">img_path_list</span><span class="p">]</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="p">[</span><span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span> <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">ret</span><span class="p">]</span>
@@ -13642,12 +13647,14 @@ Faces detect percentage in dog images: 11
 <span class="n">human_img_short</span> <span class="o">=</span> <span class="n">load_img_list</span><span class="p">(</span><span class="n">human_files_short</span><span class="p">)</span>
 <span class="n">dog_img_short</span> <span class="o">=</span> <span class="n">load_img_list</span><span class="p">(</span><span class="n">dog_files_short</span><span class="p">)</span>
 
+<span class="c1"># input cascade classifier filename, output face detect percentage of human images and dog images</span>
 <span class="k">def</span> <span class="nf">test_cascade</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cascade:&quot;</span><span class="p">,</span><span class="n">filename</span><span class="p">)</span>
     <span class="n">cascade</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CascadeClassifier</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  Faces detect percentage in human images:&#39;</span><span class="p">,</span><span class="n">face_detect_count2</span><span class="p">(</span><span class="n">human_img_short</span><span class="p">,</span><span class="n">cascade</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;  Faces detect percentage in dog images:&#39;</span><span class="p">,</span><span class="n">face_detect_count2</span><span class="p">(</span><span class="n">dog_img_short</span><span class="p">,</span><span class="n">cascade</span><span class="p">))</span>
 
+<span class="c1"># test difference cascade classifier</span>
 <span class="n">test_cascade</span><span class="p">(</span><span class="s1">&#39;haarcascades/haarcascade_frontalface_alt.xml&#39;</span><span class="p">)</span>
 <span class="n">test_cascade</span><span class="p">(</span><span class="s1">&#39;haarcascades/haarcascade_frontalface_alt2.xml&#39;</span><span class="p">)</span>
 <span class="n">test_cascade</span><span class="p">(</span><span class="s1">&#39;haarcascades/haarcascade_frontalface_alt_tree.xml&#39;</span><span class="p">)</span>
@@ -13841,6 +13848,8 @@ $$<p>Here, <code>nb_samples</code> is the number of samples, or number of images
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### TODO: Test the performance of the dog_detector function</span>
 <span class="c1">### on the images in human_files_short and dog_files_short.</span>
+
+<span class="c1"># count number of dog_detector passed in img_path_list</span>
 <span class="k">def</span> <span class="nf">dog_detector_count</span><span class="p">(</span><span class="n">img_path_list</span><span class="p">):</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">img_path</span> <span class="ow">in</span> <span class="n">img_path_list</span><span class="p">:</span>
@@ -13848,9 +13857,11 @@ $$<p>Here, <code>nb_samples</code> is the number of samples, or number of images
             <span class="n">ret</span> <span class="o">+=</span> <span class="mi">1</span>
     <span class="k">return</span> <span class="n">ret</span>
 
+<span class="c1"># do the counting in human and dog image list</span>
 <span class="n">dog_detector_count_human</span> <span class="o">=</span> <span class="n">dog_detector_count</span><span class="p">(</span><span class="n">human_files_short</span><span class="p">)</span>
 <span class="n">dog_detector_count_dog</span>   <span class="o">=</span> <span class="n">dog_detector_count</span><span class="p">(</span><span class="n">dog_files_short</span><span class="p">)</span>
 
+<span class="c1"># print the result</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dog detect percentage in human images:&#39;</span><span class="p">,</span><span class="n">dog_detector_count_human</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dog detect percentage in dog images:&#39;</span><span class="p">,</span><span class="n">dog_detector_count_dog</span><span class="p">)</span>
 </pre></div>
@@ -14018,10 +14029,12 @@ Dog detect percentage in dog images: 100
 <span class="kn">from</span> <span class="nn">keras.layers</span> <span class="k">import</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">Flatten</span><span class="p">,</span> <span class="n">Dense</span>
 <span class="kn">from</span> <span class="nn">keras.models</span> <span class="k">import</span> <span class="n">Sequential</span>
 
+<span class="c1"># free memory</span>
 <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
 
-<span class="c1">### TODO: Define your architecture.</span>
+<span class="c1"># create the model</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+<span class="c1"># 3 Conv2D-Conv2D-MaxPooling2D layers</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="n">train_tensors</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">16</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
@@ -14031,8 +14044,11 @@ Dog detect percentage in dog images: 100
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="n">filters</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">padding</span><span class="o">=</span><span class="s1">&#39;valid&#39;</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="c1"># One GlobalAveragePooling2D layer</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">GlobalAveragePooling2D</span><span class="p">())</span>
+<span class="c1"># Classification output</span>
 <span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">133</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
+<span class="c1"># print the nice summary</span>
 <span class="n">model</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
 </pre></div>
 
@@ -14099,7 +14115,8 @@ _________________________________________________________________
 <div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;rmsprop&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;categorical_crossentropy&#39;</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># compile the model</span>
+<span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;rmsprop&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;categorical_crossentropy&#39;</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -14620,12 +14637,15 @@ test_{network} = bottleneck_features['test']</code></pre>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### TODO: Obtain bottleneck features from another pre-trained CNN.</span>
+<span class="c1"># This code is implement in function so we can reuse it to try other bottleneck_feature</span>
 <span class="k">def</span> <span class="nf">load_bottleneck_feature_dict</span><span class="p">(</span><span class="n">bnf_filename</span><span class="p">):</span>
+    <span class="c1"># load the bottleneck feature and store them into dict, key = [&#39;train&#39;,&#39;valid&#39;,&#39;test&#39;]</span>
     <span class="n">bnf_dict</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">bnf_filename</span><span class="p">)</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="n">bnf_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span><span class="s1">&#39;valid&#39;</span><span class="p">,</span><span class="s1">&#39;test&#39;</span><span class="p">]}</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;load </span><span class="si">{}</span><span class="s1">, train_shape=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bnf_filename</span><span class="p">,</span><span class="n">ret</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">ret</span>
 
+<span class="c1"># load resnet50 bottleneck feature</span>
 <span class="n">resnet50_bnf</span> <span class="o">=</span> <span class="n">load_bottleneck_feature_dict</span><span class="p">(</span><span class="s1">&#39;bottleneck_features/DogResnet50Data.npz&#39;</span><span class="p">)</span>
 </pre></div>
 
@@ -14667,6 +14687,12 @@ test_{network} = bottleneck_features['test']</code></pre>
 <li>The 200 relu layer is to increase the dense of architecture to improve the detection.</li>
 <li>The 133 softmax layer is the classification output.</li>
 </ul>
+<p>Why it is better:</p>
+<ul>
+<li>This architecture is better than architecture in step 3 since it use transfer learning.</li>
+<li>It is better than architecture in step 4 since it contains more layer.</li>
+<li>According to "(EXTRA)" below, resnet50 is the best among inceptionv3 and vgg19.</li>
+</ul>
 
 </div>
 </div>
@@ -14677,14 +14703,19 @@ test_{network} = bottleneck_features['test']</code></pre>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### TODO: Define your architecture.</span>
+<span class="c1"># This code is implement in function so we can reuse it to try other bottleneck_feature</span>
 <span class="k">def</span> <span class="nf">create_model</span><span class="p">(</span><span class="n">bnf_dict</span><span class="p">):</span>
+    <span class="c1"># create model</span>
     <span class="n">ret</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+    <span class="c1"># add layers</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">GlobalAveragePooling2D</span><span class="p">(</span><span class="n">input_shape</span><span class="o">=</span><span class="n">bnf_dict</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="mi">133</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
+    <span class="c1"># show summary</span>
     <span class="n">ret</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">ret</span>
 
+<span class="c1"># build model base on resnet50 bottleneck feature</span>
 <span class="n">resnet50_model</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span><span class="n">resnet50_bnf</span><span class="p">)</span>
 </pre></div>
 
@@ -14736,9 +14767,11 @@ _________________________________________________________________
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### TODO: Compile the model.</span>
+<span class="c1"># This code is implement in function so we can reuse it to try other bottleneck_feature</span>
 <span class="k">def</span> <span class="nf">compile_model</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
     <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;categorical_crossentropy&#39;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;rmsprop&#39;</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
 
+<span class="c1"># compile the model</span>
 <span class="n">compile_model</span><span class="p">(</span><span class="n">resnet50_model</span><span class="p">)</span>
 </pre></div>
 
@@ -14764,13 +14797,17 @@ _________________________________________________________________
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### TODO: Train the model.</span>
+<span class="c1"># This code is implement in function so we can reuse it to try other bottleneck_feature</span>
 <span class="k">def</span> <span class="nf">train_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">bnf_dict</span><span class="p">,</span><span class="n">checkpointer_filename</span><span class="p">,</span><span class="n">epochs</span><span class="p">,</span><span class="n">batch_size</span><span class="p">,</span><span class="n">verbose</span><span class="p">):</span>
+    <span class="c1"># create checkpointer to store the best trainned model</span>
     <span class="n">checkpointer</span> <span class="o">=</span> <span class="n">ModelCheckpoint</span><span class="p">(</span><span class="n">filepath</span><span class="o">=</span><span class="n">checkpointer_filename</span><span class="p">,</span> 
                                    <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> <span class="n">save_best_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="c1"># train the model</span>
     <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">bnf_dict</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">],</span> <span class="n">train_targets</span><span class="p">,</span> 
               <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">bnf_dict</span><span class="p">[</span><span class="s1">&#39;valid&#39;</span><span class="p">],</span> <span class="n">valid_targets</span><span class="p">),</span>
               <span class="n">epochs</span><span class="o">=</span><span class="n">epochs</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">checkpointer</span><span class="p">],</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
 
+<span class="c1"># train the model</span>
 <span class="n">train_model</span><span class="p">(</span><span class="n">resnet50_model</span><span class="p">,</span><span class="n">resnet50_bnf</span><span class="p">,</span><span class="s1">&#39;saved_models/weights.best.resnet50.hdf5&#39;</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 
@@ -14870,9 +14907,11 @@ Epoch 20/20
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### TODO: Load the model weights with the best validation loss.</span>
+<span class="c1"># This code is implement in function so we can reuse it to try other bottleneck_feature</span>
 <span class="k">def</span> <span class="nf">model_load_weights</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">checkpointer_filename</span><span class="p">):</span>
     <span class="n">model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">checkpointer_filename</span><span class="p">)</span>
 
+<span class="c1"># load the best model trainned</span>
 <span class="n">model_load_weights</span><span class="p">(</span><span class="n">resnet50_model</span><span class="p">,</span><span class="s1">&#39;saved_models/weights.best.resnet50.hdf5&#39;</span><span class="p">)</span>
 </pre></div>
 
@@ -14897,11 +14936,15 @@ Epoch 20/20
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### TODO: Calculate classification accuracy on the test dataset.</span>
+<span class="c1"># This code is implement in function so we can reuse it to try other bottleneck_feature</span>
 <span class="k">def</span> <span class="nf">test_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">bnf_dict</span><span class="p">):</span>
+    <span class="c1"># predict on test sample</span>
     <span class="n">predictions</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">feature</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span> <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">bnf_dict</span><span class="p">[</span><span class="s1">&#39;test&#39;</span><span class="p">]]</span>
+    <span class="c1"># print accuracy</span>
     <span class="n">test_accuracy</span> <span class="o">=</span> <span class="mi">100</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">test_targets</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test accuracy: </span><span class="si">%.4f%%</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">test_accuracy</span><span class="p">)</span>
 
+<span class="c1"># test the model trained</span>
 <span class="n">test_model</span><span class="p">(</span><span class="n">resnet50_model</span><span class="p">,</span><span class="n">resnet50_bnf</span><span class="p">)</span>
 
 <span class="n">resnet50_bnf</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># release memory?</span>
@@ -14954,16 +14997,24 @@ Epoch 20/20
 <div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">load_train_model</span><span class="p">(</span><span class="n">bnf_filename</span><span class="p">,</span><span class="n">checkpointer_filename</span><span class="p">,</span><span class="n">epochs</span><span class="p">,</span><span class="n">batch_size</span><span class="p">,</span><span class="n">verbose</span><span class="p">):</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Put whole Step5 works into one function, so we can repeat on other bottleneck_feature</span>
+<span class="k">def</span> <span class="nf">load_train_model</span><span class="p">(</span><span class="n">bnf_filename</span><span class="p">,</span><span class="n">checkpointer_filename</span><span class="p">,</span><span class="n">epochs</span><span class="p">,</span><span class="n">batch_size</span><span class="p">,</span><span class="n">verbose</span><span class="p">):</span>
     <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;load train: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bnf_filename</span><span class="p">))</span>
+    <span class="c1"># load the bottleneck feature</span>
     <span class="n">bnf_dict</span> <span class="o">=</span> <span class="n">load_bottleneck_feature_dict</span><span class="p">(</span><span class="n">bnf_filename</span><span class="p">)</span>
+    <span class="c1"># create model</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">create_model</span><span class="p">(</span><span class="n">bnf_dict</span><span class="p">)</span>
+    <span class="c1"># compile model</span>
     <span class="n">compile_model</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+    <span class="c1"># train model</span>
     <span class="n">train_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">bnf_dict</span><span class="p">,</span><span class="n">checkpointer_filename</span><span class="p">,</span><span class="n">epochs</span><span class="p">,</span><span class="n">batch_size</span><span class="p">,</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="c1"># load best trainned model</span>
     <span class="n">model_load_weights</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">checkpointer_filename</span><span class="p">)</span>
+    <span class="c1"># run test</span>
     <span class="n">test_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">bnf_dict</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="c1"># free memory</span>
     <span class="n">bnf_dict</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">model</span>
@@ -15065,20 +15116,22 @@ Test accuracy: 72.2488%
 <span class="c1">### and returns the dog breed that is predicted by the model.</span>
 <span class="k">def</span> <span class="nf">predict_image_path_to_dog_breed_name</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">img_path</span><span class="p">):</span>
     <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+    <span class="c1"># load image</span>
     <span class="n">img_list_np</span> <span class="o">=</span> <span class="n">path_to_tensor</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
+    <span class="c1"># get bottleneck feature</span>
     <span class="n">bnf_list_np</span> <span class="o">=</span> <span class="n">extract_Resnet50</span><span class="p">(</span><span class="n">img_list_np</span><span class="p">)</span>
+    <span class="c1"># predict result</span>
     <span class="n">predict_list_np</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">bnf_list_np</span><span class="p">)</span>
-    <span class="c1">#print(predict_list_np.shape)</span>
     <span class="n">label_list_np</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">predict_list_np</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="c1">#print(label_list_np.shape)</span>
+    <span class="c1"># transform to breed name</span>
     <span class="n">label_name_str_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">dog_names</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">label_list_np</span><span class="p">]</span>
     <span class="n">label_name_str</span> <span class="o">=</span> <span class="n">label_name_str_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># free memory</span>
     <span class="n">img_list_np</span> <span class="o">=</span> <span class="n">bnf_list_np</span> <span class="o">=</span> <span class="n">predict_list_np</span> <span class="o">=</span> <span class="n">label_list_np</span> <span class="o">=</span> <span class="n">label_name_str_list</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">label_name_str</span>
 
-<span class="c1"># testing testing 123</span>
-<span class="c1"># print(test_targets[0].shape)</span>
+<span class="c1"># test if the function run good, no stupid typo</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
     <span class="n">tmp_predict_breed_name</span> <span class="o">=</span> <span class="n">predict_image_path_to_dog_breed_name</span><span class="p">(</span><span class="n">resnet50_model</span><span class="p">,</span><span class="n">test_files</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
     <span class="n">tmp_actual_breed_name</span> <span class="o">=</span> <span class="n">dog_names</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">test_targets</span><span class="p">[</span><span class="n">i</span><span class="p">])]</span>
@@ -15136,20 +15189,28 @@ dog:2, predict:Papillon, actual:Papillon
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">### TODO: Write your algorithm.</span>
 <span class="c1">### Feel free to use as many code cells as needed.</span>
 
+<span class="c1"># input image path, output prediction</span>
 <span class="k">def</span> <span class="nf">predict_and_output</span><span class="p">(</span><span class="n">img_path</span><span class="p">):</span>
+    <span class="c1"># free memory</span>
     <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
+    <span class="c1"># load the image</span>
     <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
     <span class="n">cv_rgb</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+    <span class="c1"># show image</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cv_rgb</span><span class="p">)</span>
     <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="c1"># print image name</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">img_path</span><span class="p">)</span>
+    <span class="c1"># get dog breed prediction</span>
     <span class="n">predict_dog_breed_name</span> <span class="o">=</span> <span class="n">predict_image_path_to_dog_breed_name</span><span class="p">(</span><span class="n">resnet50_model</span><span class="p">,</span><span class="n">img_path</span><span class="p">)</span>
     <span class="n">predict_type</span> <span class="o">=</span> <span class="s2">&quot;unknown&quot;</span>
-    <span class="k">if</span><span class="p">(</span><span class="n">dog_detector</span><span class="p">(</span><span class="n">img_path</span><span class="p">)):</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dog_detector</span><span class="p">(</span><span class="n">img_path</span><span class="p">)):</span> <span class="c1"># dog detection</span>
         <span class="n">predict_type</span> <span class="o">=</span> <span class="s2">&quot;dog&quot;</span>
-    <span class="k">elif</span><span class="p">(</span><span class="n">face_detector</span><span class="p">(</span><span class="n">img_path</span><span class="p">)):</span>
+    <span class="k">elif</span><span class="p">(</span><span class="n">face_detector</span><span class="p">(</span><span class="n">img_path</span><span class="p">)):</span> <span class="c1"># human detection</span>
         <span class="n">predict_type</span> <span class="o">=</span> <span class="s2">&quot;human&quot;</span>
+    <span class="c1"># print result</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Predict: </span><span class="si">{}</span><span class="s1">, look like </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">predict_type</span><span class="p">,</span><span class="n">predict_dog_breed_name</span><span class="p">))</span>
+    <span class="c1"># free memory</span>
     <span class="n">img</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">cv_rgb</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span>
@@ -15195,6 +15256,7 @@ dog:2, predict:Papillon, actual:Papillon
 <span class="c1">## at least 6 images on your computer.</span>
 <span class="c1">## Feel free to use as many code cells as needed.</span>
 
+<span class="c1"># list of image</span>
 <span class="n">test_img_list</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;dog0.jpg&#39;</span><span class="p">,</span>
     <span class="s1">&#39;dog1.jpg&#39;</span><span class="p">,</span>
@@ -15207,6 +15269,7 @@ dog:2, predict:Papillon, actual:Papillon
     <span class="s1">&#39;kyubey.png&#39;</span>
 <span class="p">]</span>
 
+<span class="c1"># predict all image in image list</span>
 <span class="k">for</span> <span class="n">test_img</span> <span class="ow">in</span> <span class="n">test_img_list</span><span class="p">:</span>
     <span class="n">predict_and_output</span><span class="p">(</span><span class="s1">&#39;test_img/</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">test_img</span><span class="p">))</span>
 </pre></div>
